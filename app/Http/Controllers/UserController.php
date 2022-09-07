@@ -2,35 +2,55 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use App\Models\User;
 use JWTAuth;
+use Validator;
+use App\Models\User;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use PHPOpenSourceSaver\JWTAuth\Exceptions\JWTException;
-
 
 class UserController extends Controller
 {
-    public function register(Request $request)
-    {
-        $this->validate($request, [
-            'name'=>'required',
-            'email'=>'required|email|unique:users',
-            'password'=>'required'
-        ]);
 
-        $user = new User([
-            'name'=> $request->input('name'),
-            'email'=> $request->input('email'),
-            'password'=> bcrypt($request->input('password'))
-        ]);
-
-        $user->save();
-
-        return response()->json([
-            'message'=>'Successfully Created user'
-        ],201);
+    /**
+     * Create a new UserController instance.
+     *
+     * @return void
+     */
+    public function __construct() {
+        $this->middleware('auth.jwt', ['except' => ['login', 'register']]);
     }
 
+    /**
+     * Register a User.
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function register(Request $request) {
+
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|string|between:2,100',
+            'email' => 'required|string|email|max:100|unique:users',
+            'password' => 'required|string|min:6',
+        ]);
+        if($validator->fails()){
+            return response()->json($validator->errors()->toJson(), 400);
+        }
+        $user = User::create(array_merge(
+                    $validator->validated(),
+                    ['password' => bcrypt($request->password)]
+                ));
+        return response()->json([
+            'message' => 'User successfully registered',
+            'user' => $user
+        ], 201);
+    }
+
+    /**
+     * Get a JWT via given credentials.
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function login(Request $request)
     {
         $this->validate($request, [
@@ -50,13 +70,55 @@ class UserController extends Controller
                 'error' => 'Could not create token'
             ], 500);
         }
+        $user = Auth::user();
         return response()->json([
-            'token' => $token
+            'status' => 'success',
+            'user' => $user,
+            'authorisation' => [
+                'token' => $token,
+                'type' => 'bearer',
+            ]
         ], 200);
     }
 
+    /**
+     * Get the authenticated User.
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function getUser(){
         $user = auth('api')->user();
         return response()->json(['user'=>$user], 201);
+    }
+
+    /**
+     * Log the user out (Invalidate the token).
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function logout()
+    {
+        Auth::logout();
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Successfully logged out',
+        ]);
+    }
+
+    /**
+     * Refresh a token.
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function refresh()
+    {
+        return response()->json([
+            'status' => 'success',
+            'user' => Auth::user(),
+            'authorisation' => [
+                'token' => Auth::refresh(),
+                'type' => 'bearer',
+            ]
+        ]);
     }
 }
