@@ -10,6 +10,7 @@ use Throwable;
 use PHPOpenSourceSaver\JWTAuth\Exceptions\JWTException;
 use PHPOpenSourceSaver\JWTAuth\Exceptions\TokenExpiredException;
 use PHPOpenSourceSaver\JWTAuth\Exceptions\TokenInvalidException;
+use Spatie\Permission\Exceptions\UnauthorizedException;
 
 class Handler extends ExceptionHandler
 {
@@ -58,6 +59,13 @@ class Handler extends ExceptionHandler
 
         $this->renderable(function (JWTException $e, $request) {
         return Response::json(['error'=>'Token not parsed'],401);
+        });
+
+        $this->renderable(function (UnauthorizedException $e, $request) {
+            return response()->json([
+                'responseMessage' => 'You do not have the required authorization.',
+                'responseStatus'  => 403,
+            ]);
         });
     }
 }

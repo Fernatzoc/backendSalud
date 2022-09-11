@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use PHPOpenSourceSaver\JWTAuth\Exceptions\JWTException;
 
+
 class UserController extends Controller
 {
 
@@ -17,8 +18,10 @@ class UserController extends Controller
      *
      * @return void
      */
-    public function __construct() {
+    public function __construct()
+    {
         $this->middleware('auth.jwt', ['except' => ['login', 'register']]);
+        $this->middleware(['role:super-admin'], ['except' => ['login', 'register', 'logout']]);
     }
 
     /**
@@ -26,20 +29,21 @@ class UserController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function register(Request $request) {
+    public function register(Request $request)
+    {
 
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|between:2,100',
             'email' => 'required|string|email|max:100|unique:users',
             'password' => 'required|string|min:6',
         ]);
-        if($validator->fails()){
+        if ($validator->fails()) {
             return response()->json($validator->errors()->toJson(), 400);
         }
         $user = User::create(array_merge(
-                    $validator->validated(),
-                    ['password' => bcrypt($request->password)]
-                ));
+            $validator->validated(),
+            ['password' => bcrypt($request->password)]
+        ));
         return response()->json([
             'message' => 'User successfully registered',
             'user' => $user
@@ -53,10 +57,15 @@ class UserController extends Controller
      */
     public function login(Request $request)
     {
-        $this->validate($request, [
+
+        $validator = Validator::make($request->all(), [
             'email' => 'required|email',
             'password' => 'required'
         ]);
+
+        if ($validator->fails()) {
+            return response()->json($validator->errors()->toJson(), 400);
+        }
 
         $credentials = $request->only('email', 'password');
         try {
@@ -86,9 +95,10 @@ class UserController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getUser(){
+    public function getUser()
+    {
         $user = auth('api')->user();
-        return response()->json(['user'=>$user], 201);
+        return response()->json(['user' => $user], 201);
     }
 
     /**
