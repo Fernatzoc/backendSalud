@@ -20,32 +20,42 @@ class UserController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth.jwt', ['except' => ['login', 'register']]);
-        $this->middleware(['role:super-admin'], ['except' => ['login', 'register', 'logout']]);
+        $this->middleware('auth.jwt', ['except' => ['login']]);
+        $this->middleware(['role:Administrador'], ['except' => [
+            'login',
+            'logout'
+        ]]);
     }
 
     /**
-     * Register a User.
+     * create a User.
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function register(Request $request)
+    public function newUser(Request $request)
     {
 
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|between:2,100',
             'email' => 'required|string|email|max:100|unique:users',
             'password' => 'required|string|min:6',
+            'role' => 'required|in:Administrador,Personal',
         ]);
+
         if ($validator->fails()) {
             return response()->json($validator->errors()->toJson(), 400);
         }
-        $user = User::create(array_merge(
-            $validator->validated(),
-            ['password' => bcrypt($request->password)]
-        ));
+
+        $user = User::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => bcrypt($request->password)
+        ]);
+
+        $user->assignRole($request->role);
+
         return response()->json([
-            'message' => 'User successfully registered',
+            'message' => 'Usuario creado exitosamente',
             'user' => $user
         ], 201);
     }
@@ -71,22 +81,20 @@ class UserController extends Controller
         try {
             if (!$token = JWTAuth::attempt($credentials)) {
                 return response()->json([
-                    'error' => 'Invalid Credentials'
+                    'error' => 'Credenciales no válidas'
                 ], 401);
             }
         } catch (JWTException $e) {
             return response()->json([
-                'error' => 'Could not create token'
+                'error' => 'No se ha podido crear el token'
             ], 500);
         }
         $user = Auth::user();
         return response()->json([
-            'status' => 'success',
+            'status' => 'ok',
             'user' => $user,
-            'authorisation' => [
-                'token' => $token,
-                'type' => 'bearer',
-            ]
+            'role' => $user->roles()->pluck('name')->implode(' '),
+            'token' => $token,
         ], 200);
     }
 
@@ -110,8 +118,8 @@ class UserController extends Controller
     {
         Auth::logout();
         return response()->json([
-            'status' => 'success',
-            'message' => 'Successfully logged out',
+            'status' => 'ok',
+            'message' => 'Se ha cerrado la sesión con éxito',
         ]);
     }
 
@@ -123,12 +131,12 @@ class UserController extends Controller
     public function refresh()
     {
         return response()->json([
-            'status' => 'success',
+            'status' => 'ok',
             'user' => Auth::user(),
             'authorisation' => [
-                'token' => Auth::refresh(),
                 'type' => 'bearer',
-            ]
+            ],
+            'token' => Auth::refresh()
         ]);
     }
 }

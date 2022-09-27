@@ -19,15 +19,15 @@ class UserSeeder extends Seeder
             ->create()
             ->each(
                 function ($user) {
-                    $user->assignRole('super-admin');
+                    $user->assignRole('Administrador');
                 }
             );
 
-        User::factory()->count(2)
+        User::factory()->count(1)
             ->create()
             ->each(
                 function ($user) {
-                    $user->assignRole('writer');
+                    $user->assignRole('Personal');
                 }
             );
     }

@@ -51,19 +51,19 @@ class Handler extends ExceptionHandler
     public function register()
     {
         $this->renderable(function(TokenInvalidException $e, $request){
-            return Response::json(['error'=>'Invalid token'],401);
+            return Response::json(['error'=>'Token inválido'],401);
         });
         $this->renderable(function (TokenExpiredException $e, $request) {
-        return Response::json(['error'=>'Token has Expired'],401);
+        return Response::json(['error'=>'El token ha caducado'],401);
         });
 
         $this->renderable(function (JWTException $e, $request) {
-        return Response::json(['error'=>'Token not parsed'],401);
+        return Response::json(['error'=>'Token no parseado'],401);
         });
 
         $this->renderable(function (UnauthorizedException $e, $request) {
             return response()->json([
-                'responseMessage' => 'You do not have the required authorization.',
+                'responseMessage' => 'No tiene la autorización requerida',
                 'responseStatus'  => 403,
             ]);
         });
