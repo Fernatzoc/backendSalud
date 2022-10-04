@@ -23,3 +23,5 @@ Route::controller(UserController::class)->group(function () {
     Route::get('/users/me', 'getUser');
     Route::get('/users/all', 'allUsers');
 });
+
+Route::apiResource('/pregnant', 'App\Http\Controllers\Api\PregnantController');
