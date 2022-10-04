@@ -1,6 +1,5 @@
 <?php
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 
@@ -22,4 +21,5 @@ Route::controller(UserController::class)->group(function () {
     Route::post('/users/logout', 'logout');
     Route::get('/users/refresh', 'refresh');
     Route::get('/users/me', 'getUser');
+    Route::get('/users/all', 'allUsers');
 });

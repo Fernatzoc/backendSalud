@@ -139,4 +139,17 @@ class UserController extends Controller
             'token' => Auth::refresh()
         ]);
     }
+
+    public function allUsers()
+    {
+        $allUsers = User::paginate(100);
+
+        foreach ($allUsers as $user) {
+            $user['rol'] = $user->roles()->pluck('name')->implode(' ');
+        }
+        
+        return response()->json([
+            'allUsers' => $allUsers,
+        ]);
+    }
 }
