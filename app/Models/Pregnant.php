@@ -20,4 +20,8 @@ class Pregnant extends Model
         'altura',
         'id_user'
     ];
+
+    public function user() {
+        return $this->belongsTo(User::class, 'id');
+    }
 }

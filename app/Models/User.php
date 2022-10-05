@@ -62,4 +62,8 @@ class User extends Authenticatable implements JWTSubject
     {
         return $this->getKey();
     }
+
+    public function pregnants() {
+        return $this->hasMany(Pregnant::class, 'id_user');
+    }
 }

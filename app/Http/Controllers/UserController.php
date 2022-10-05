@@ -142,7 +142,7 @@ class UserController extends Controller
 
     public function allUsers()
     {
-        $allUsers = User::paginate(100);
+        $allUsers = User::with('pregnants')->paginate(100);
 
         foreach ($allUsers as $user) {
             $user['rol'] = $user->roles()->pluck('name')->implode(' ');

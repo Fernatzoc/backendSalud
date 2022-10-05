@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use Validator;
 use App\Http\Controllers\Controller;
+use App\Http\Resources\PregnantResource;
 use App\Models\Pregnant;
 use Illuminate\Http\Request;
 
@@ -17,7 +18,7 @@ class PregnantController extends Controller
      */
     public function index()
     {
-        //
+        return PregnantResource::collection(Pregnant::paginate(100));
     }
 
     /**
@@ -47,6 +48,8 @@ class PregnantController extends Controller
         $pregnant = Pregnant::create(array_merge(
             $validator->validated(),
         ));
+
+        // return new PregnantResource($pregnant);
 
         return response()->json([
             'status' => 'ok',
