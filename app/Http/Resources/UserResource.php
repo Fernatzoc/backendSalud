@@ -22,8 +22,8 @@ class UserResource extends JsonResource
             'email' => $this->email,
             'rol' => $this->roles()->pluck('name')->implode(' '),
             'registros' => $this->pregnants,
-            'created_at' => Carbon::parse($this->created_at)->format('Y-m-d'),
-            'updated_at' => Carbon::parse($this->updated_at)->format('Y-m-d'),
+            'created_at' => Carbon::parse($this->created_at)->format('d-m-Y'),
+            'updated_at' => Carbon::parse($this->updated_at)->format('d-m-Y'),
         ];
     }
 }

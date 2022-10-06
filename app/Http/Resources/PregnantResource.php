@@ -23,16 +23,16 @@ class PregnantResource extends JsonResource
             'nombres' => $this->nombres,
             'apellidos' => $this->apellidos,
             'direccion' => $this->direccion,
-            'fecha_de_nacimiento' => $this->fecha_de_nacimiento,
-            'ultima_regla' => $this->ultima_regla,
+            'fecha_de_nacimiento' => Carbon::parse($this->fecha_de_nacimiento)->format('d-m-Y'),
+            'ultima_regla' => Carbon::parse($this->ultima_regla)->format('d-m-Y'),
             'peso' => $this->peso,
             'altura' => $this->altura,
             'id_user' => (String) $this->id_user,
-            // 'user' => $this->user->name !== null ? $this->user->name : '', 
+            'user_name' => $this->user ? $this->user->name : '',
             // 'user' => new UserResource($this->user),
             // 'created_at' => (string) $this->created_at,
-            'created_at' => Carbon::parse($this->created_at)->format('Y-m-d'),
-            'updated_at' => Carbon::parse($this->updated_at)->format('Y-m-d'),
+            'created_at' => Carbon::parse($this->created_at)->format('d-m-Y'),
+            'updated_at' => Carbon::parse($this->updated_at)->format('d-m-Y'),
         ];
     }
 }
