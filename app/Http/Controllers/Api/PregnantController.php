@@ -49,12 +49,12 @@ class PregnantController extends Controller
             $validator->validated(),
         ));
 
-        // return new PregnantResource($pregnant);
+        return new PregnantResource($pregnant);
 
-        return response()->json([
-            'status' => 'ok',
-            'pregnant' => $pregnant
-        ], 201);
+        // return response()->json([
+        //     'status' => 'ok',
+        //     'pregnant' => $pregnant
+        // ], 201);
     }
 
     /**

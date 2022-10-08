@@ -54,6 +54,8 @@ class UserController extends Controller
 
         $user->assignRole($request->role);
 
+        $user['rol'] = $user->roles()->pluck('name')->implode(' ');
+
         return response()->json([
             'message' => 'Usuario creado exitosamente',
             'user' => $user
