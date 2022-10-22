@@ -16,8 +16,8 @@ use App\Http\Controllers\UserController;
 */
 
 Route::controller(UserController::class)->group(function () {
-    Route::post('/users/login', 'login');
-    Route::post('/users/new', 'newUser');
+    Route::post('/users/login', 'login')->name('loginApi');
+    Route::post('/users/new', 'newUser')->name('newUserApi');
     Route::post('/users/logout', 'logout');
     Route::get('/users/refresh', 'refresh');
     Route::get('/users/me', 'getUser');
