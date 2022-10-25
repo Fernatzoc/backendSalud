@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ExportController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 
@@ -22,6 +23,11 @@ Route::controller(UserController::class)->group(function () {
     Route::get('/users/refresh', 'refresh');
     Route::get('/users/me', 'getUser');
     Route::get('/users/all', 'allUsers');
+});
+
+Route::controller(ExportController::class)->group(function () {
+    Route::get('/download.pdf', 'reportPdf');
+    Route::get('/downloadExcel.xlsx', 'reportExcel');
 });
 
 Route::apiResource('/pregnant', 'App\Http\Controllers\Api\PregnantController');

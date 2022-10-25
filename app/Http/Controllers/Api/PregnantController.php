@@ -37,6 +37,7 @@ class PregnantController extends Controller
             'fecha_de_nacimiento' => 'required|string',
             'ultima_regla' => 'required|string',
             'peso' => 'required|string',
+            'cmb' => 'required|string',
             'altura' => 'required|string',
             'id_user' => 'required|string',
         ]);

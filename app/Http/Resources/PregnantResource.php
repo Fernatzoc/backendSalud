@@ -26,6 +26,7 @@ class PregnantResource extends JsonResource
             'fecha_de_nacimiento' => Carbon::parse($this->fecha_de_nacimiento)->format('d-m-Y'),
             'ultima_regla' => Carbon::parse($this->ultima_regla)->format('d-m-Y'),
             'peso' => $this->peso,
+            'cmb' => $this->cmb,
             'altura' => $this->altura,
             'id_user' => (String) $this->id_user,
             'user_name' => $this->user ? $this->user->name : '',

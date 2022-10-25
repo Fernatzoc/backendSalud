@@ -17,6 +17,7 @@ class Pregnant extends Model
         'fecha_de_nacimiento',
         'ultima_regla',
         'peso',
+        'cmb',
         'altura',
         'id_user'
     ];

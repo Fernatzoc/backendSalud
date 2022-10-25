@@ -23,6 +23,7 @@ return new class extends Migration
             $table->string('ultima_regla');
             $table->string('peso');
             $table->string('altura');
+            $table->string('cmb');
             $table->unsignedBigInteger('id_user');
             $table->foreign('id_user')->references('id')->on('users');
             $table->timestamps();
