@@ -18,7 +18,7 @@ class PregnantController extends Controller
      */
     public function index()
     {
-        return PregnantResource::collection(Pregnant::paginate(100));
+        return PregnantResource::collection(Pregnant::paginate(100)->reverse());
     }
 
     /**
@@ -36,6 +36,7 @@ class PregnantController extends Controller
             'direccion' => 'required|string',
             'fecha_de_nacimiento' => 'required|string',
             'ultima_regla' => 'required|string',
+            'tipo_de_examen' => 'required',
             'peso' => 'required|string',
             'cmb' => 'required|string',
             'altura' => 'required|string',
@@ -58,6 +59,15 @@ class PregnantController extends Controller
         // ], 201);
     }
 
+    public function search($data)
+    {
+        $pregnant = Pregnant::where('nombres', 'like', "%{$data}%")
+                         ->orWhere('apellidos', 'like', "%{$data}%")
+                         ->get();
+
+        return PregnantResource::collection($pregnant);
+    }
+
     /**
      * Display the specified resource.
      *
@@ -78,7 +88,9 @@ class PregnantController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $pregnant=Pregnant::find($id);
+        $pregnant->update($request->all());
+        return new PregnantResource($pregnant);
     }
 
     /**
@@ -89,6 +101,6 @@ class PregnantController extends Controller
      */
     public function destroy($id)
     {
-        //
+        return Pregnant::destroy($id);
     }
 }

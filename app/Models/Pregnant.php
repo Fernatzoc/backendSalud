@@ -15,6 +15,7 @@ class Pregnant extends Model
         'cui',
         'direccion',
         'fecha_de_nacimiento',
+        'tipo_de_examen',
         'ultima_regla',
         'peso',
         'cmb',

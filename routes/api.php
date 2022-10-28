@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\PregnantController;
 use App\Http\Controllers\ExportController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
@@ -31,3 +32,4 @@ Route::controller(ExportController::class)->group(function () {
 });
 
 Route::apiResource('/pregnant', 'App\Http\Controllers\Api\PregnantController');
+Route::get('/pregnant/search/{data}', [PregnantController::class, 'search']);

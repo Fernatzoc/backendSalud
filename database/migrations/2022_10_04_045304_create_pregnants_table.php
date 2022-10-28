@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('apellidos');
             $table->string('direccion');
             $table->string('fecha_de_nacimiento');
+            $table->string('tipo_de_examen');
             $table->string('ultima_regla');
             $table->string('peso');
             $table->string('altura');
