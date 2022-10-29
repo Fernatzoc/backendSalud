@@ -29,8 +29,8 @@ Route::controller(UserController::class)->group(function () {
 });
 
 Route::controller(ExportController::class)->group(function () {
-    Route::get('/download.pdf', 'reportPdf');
-    Route::get('/downloadExcel.xlsx', 'reportExcel');
+    Route::get('/downloadpdf', 'reportPdf');
+    Route::get('/downloadExcel', 'reportExcel');
 });
 
 Route::apiResource('/pregnant', 'App\Http\Controllers\Api\PregnantController');
