@@ -11,7 +11,7 @@
 </head>
 
 <body>
-  <div class="row">
+  {{-- <div class="row">
     <div class="col-xs-4">
       <div class="invoice-logo-container">
         <img class="invoice-logo" src="{{ public_path('assets/img/logo-ct.jpg') }}">
@@ -25,16 +25,16 @@
         <div class="font-weight-bold fs-18">
           Reporte
         </div>
-        {{-- <div class="fs-16">
+        <div class="fs-16">
           Fecha: {{ $from->eq($to) ? $from->format('d/m/Y') : "{$from->format('d/m/Y')} al
           {$to->format('d/m/Y')}" }}
         </div>
-        <div class="fs-16">Usuario: {{ $user }}</div> --}}
+        <div class="fs-16">Usuario: {{ $user }}</div>
       </div>
     </div>
-  </div>
+  </div> --}}
 
-  <div class="row m-180">
+  <div class="row">
     <div class="col-xs-12">
       <table cellpadding="0" cellspacing="0" class="table-items" width="100%">
         <thead>
@@ -93,7 +93,7 @@
     <table cellpadding="0" cellspacing="0" class="table-items" width="100%">
       <tr>
         <td width="20%">
-          <span>Sistema de prestamos</span>
+          <span>Sistema</span>
         </td>
         <td width="60%" class="text-center">
           <span>UMG</span>

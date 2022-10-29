@@ -1,6 +1,5 @@
 <?php
 
-use App\Http\Controllers\ExportController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -16,9 +15,4 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('welcome');
-});
-
-Route::controller(ExportController::class)->group(function () {
-    Route::get('/downloadpdf', 'reportPdf');
-    Route::get('/downloadExcel', 'reportExcel');
 });
