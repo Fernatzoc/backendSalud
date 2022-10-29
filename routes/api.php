@@ -28,10 +28,6 @@ Route::controller(UserController::class)->group(function () {
     Route::get('/users/all', 'allUsers');
 });
 
-Route::controller(ExportController::class)->group(function () {
-    Route::get('/downloadpdf', 'reportPdf');
-    Route::get('/downloadExcel', 'reportExcel');
-});
 
 Route::apiResource('/pregnant', 'App\Http\Controllers\Api\PregnantController');
 Route::get('/pregnant/search/{data}', [PregnantController::class, 'search']);
