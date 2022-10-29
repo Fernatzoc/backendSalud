@@ -15,11 +15,6 @@ class ExportController extends Controller
         $user = 'Todos';
         $pregants = Pregnant::all();
 
-        // $pdf = Pdf::loadView(
-        //     'exports.report-pregants',
-        //     compact('pregants')
-        // )->setPaper('a4', 'landscape')->setWarnings(false);
-
         $pdf = Pdf::loadView(
             'exports.report-pregants',
             compact('pregants')

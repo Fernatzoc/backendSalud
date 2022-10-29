@@ -6,6 +6,7 @@ use JWTAuth;
 use Validator;
 use App\Models\User;
 use Illuminate\Http\Request;
+use App\Http\Resources\UserResource;
 use Illuminate\Support\Facades\Auth;
 use PHPOpenSourceSaver\JWTAuth\Exceptions\JWTException;
 
@@ -56,10 +57,12 @@ class UserController extends Controller
 
         $user['rol'] = $user->roles()->pluck('name')->implode(' ');
 
-        return response()->json([
-            'message' => 'Usuario creado exitosamente',
-            'user' => $user
-        ], 201);
+        // return response()->json([
+        //     'message' => 'Usuario creado exitosamente',
+        //     'user' => $user
+        // ], 201);
+
+        return new UserResource($user);
     }
 
     /**
@@ -94,7 +97,7 @@ class UserController extends Controller
         $user = Auth::user();
         return response()->json([
             'status' => 'ok',
-            'user' => $user,
+            'id' => (String)$user->id,
             'role' => $user->roles()->pluck('name')->implode(' '),
             'token' => $token,
         ], 200);
@@ -134,24 +137,13 @@ class UserController extends Controller
     {
         return response()->json([
             'status' => 'ok',
-            'user' => Auth::user(),
-            'authorisation' => [
-                'type' => 'bearer',
-            ],
+            'id' => strval(Auth::user()->id),
             'token' => Auth::refresh()
         ]);
     }
 
     public function allUsers()
     {
-        $allUsers = User::with('pregnants')->paginate(100);
-
-        foreach ($allUsers as $user) {
-            $user['rol'] = $user->roles()->pluck('name')->implode(' ');
-        }
-        
-        return response()->json([
-            'allUsers' => $allUsers,
-        ]);
+        return UserResource::collection(User::paginate(100)->reverse());
     }
 }
