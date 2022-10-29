@@ -20,6 +20,8 @@ use App\Http\Controllers\UserController;
 Route::controller(UserController::class)->group(function () {
     Route::post('/users/login', 'login')->name('loginApi');
     Route::post('/users/new', 'newUser')->name('newUserApi');
+    Route::put('/users/{id}', 'update')->name('updateUserApi');
+    Route::delete('/users/{id}', 'destroy')->name('destroyUserApi');
     Route::post('/users/logout', 'logout');
     Route::get('/users/refresh', 'refresh');
     Route::get('/users/me', 'getUser');

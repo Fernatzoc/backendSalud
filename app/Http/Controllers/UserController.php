@@ -55,14 +55,43 @@ class UserController extends Controller
 
         $user->assignRole($request->role);
 
-        $user['rol'] = $user->roles()->pluck('name')->implode(' ');
-
-        // return response()->json([
-        //     'message' => 'Usuario creado exitosamente',
-        //     'user' => $user
-        // ], 201);
-
         return new UserResource($user);
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function update(Request $request, $id)
+    {
+        $user = User::find($id);
+
+        $user->name = $request->name;
+        $user->email = $request->email;
+
+        if (!$request->password == '') {
+            $user->password = bcrypt($request->password);
+        }
+
+        $user->save();
+ 
+        $user->syncRoles([]);
+        $user->assignRole($request->role);
+        return new UserResource($user);
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy($id)
+    {
+        return User::destroy($id);
     }
 
     /**
@@ -97,7 +126,7 @@ class UserController extends Controller
         $user = Auth::user();
         return response()->json([
             'status' => 'ok',
-            'id' => (String)$user->id,
+            'id' => (string)$user->id,
             'role' => $user->roles()->pluck('name')->implode(' '),
             'token' => $token,
         ], 200);
