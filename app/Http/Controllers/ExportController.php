@@ -31,6 +31,13 @@ class ExportController extends Controller
                 'Cui' => $pregant->cui,
                 'Nombres' => $pregant->nombres,
                 'Apellidos' => $pregant->apellidos,
+                'direccion' => $pregant->direccion,
+                'Fecha De Nacimiento' => $pregant->fecha_de_nacimiento,
+                'Tipo De Examen' => $pregant->tipo_de_examen,
+                'Fecha' => $pregant->ultima_regla,
+                'peso' => $pregant->peso,
+                'altura' => $pregant->altura,
+                'cmb' => $pregant->cmb,
             ];
         });
     }
