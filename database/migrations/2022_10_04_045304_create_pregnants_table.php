@@ -25,6 +25,7 @@ return new class extends Migration
             $table->string('peso');
             $table->string('altura');
             $table->string('cmb');
+            $table->tinyInteger('estado')->default(1);
             $table->unsignedBigInteger('id_user');
             $table->foreign('id_user')->references('id')->on('users');
             $table->timestamps();
