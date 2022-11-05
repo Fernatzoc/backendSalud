@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\ForgotPasswordController;
 use App\Http\Controllers\Api\PregnantController;
 use App\Http\Controllers\ExportController;
 use Illuminate\Support\Facades\Route;
@@ -35,3 +36,6 @@ Route::controller(ExportController::class)->group(function () {
 
 Route::apiResource('/pregnant', 'App\Http\Controllers\Api\PregnantController');
 Route::get('/pregnant/search/{data}', [PregnantController::class, 'search']);
+
+Route::post('/password/email', [ForgotPasswordController::class, 'forgot']);
+Route::post('password/reset', [ForgotPasswordController::class, 'reset']);
